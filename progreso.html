@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>study_control - Mi Progreso</title>
+    <style>
+        :root { --primary: #4f46e5; --bg: #f8fafc; --text: #1e293b; --card: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 0; }
+        header { background-color: var(--primary); color: white; padding: 1.5rem; text-align: center; }
+        nav { background: #3730a3; padding: 0.8rem; text-align: center; }
+        nav a { color: white; text-decoration: none; margin: 0 12px; font-weight: 600; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .card { background: var(--card); padding: 1.5rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 1.5rem; }
+        h2 { color: var(--primary); margin-top: 0; }
+        .stat-box { background: #f1f5f9; padding: 1rem; border-radius: 6px; margin-top: 1rem; font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>study_control</h1>
+        <p>Acompañamiento y reporte de tu aprendizaje</p>
+    </header>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="horarios.html">Horarios</a>
+        <a href="materias.html">Materias</a>
+        <a href="ejercicios.html">Ejercicios</a>
+        <a href="progreso.html">Mi progreso</a>
+    </nav>
+    <div class="container">
+        <div class="card">
+            <h2>Informe de Progreso</h2>
+            <p id="saludoEstudiante">Cargando datos del estudiante...</p>
+            
+            <div class="stat-box">
+                <p>📅 Horarios registrados: <strong id="totalHorarios">0</strong></p>
+                <p>📚 Módulos teóricos estudiados: <strong id="totalMaterias">0</strong> / 3</p>
+                <p>🎯 Ejercicios correctos: <strong id="totalEjercicios">0</strong> / 2</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let nombre = localStorage.getItem("study_nombre") || "Estudiante";
+            document.getElementById("saludoEstudiante").innerHTML = `¡Hola, <strong>${nombre}</strong>! Aquí puedes ver el resumen de tu desempeño actual en la plataforma.`;
+
+            let horarios = JSON.parse(localStorage.getItem("study_horarios")) || [];
+            document.getElementById("totalHorarios").innerText = horarios.length;
+
+            let materias = JSON.parse(localStorage.getItem("study_progreso_materias")) || {};
+            let countMat = Object.values(materias).filter(Boolean).length;
+            document.getElementById("totalMaterias").innerText = countMat;
+
+            let ejercicios = JSON.parse(localStorage.getItem("study_progreso_ejercicios")) || {};
+            let countEj = Object.values(ejercicios).filter(Boolean).length;
+            document.getElementById("totalEjercicios").innerText = countEj;
+        });
+    </script>
+</body>
+</html>
