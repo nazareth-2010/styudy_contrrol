@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>study_control - Aplicación Educativa</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        header p {
+            margin: 0.5rem 0 0 0;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 0.95rem;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: #f1f5f9;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-pending { background-color: #fef3c7; color: #d97706; }
+        .badge-done { background-color: #d1fae5; color: #059669; }
+
+        .flex-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .flex-col {
+            flex: 1;
+        }
+
+        @media(max-width: 600px) {
+            .flex-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>study_control</h1>
+        <p>Aplicación Educativa Web - Organiza tus horarios, aprende programación y sigue tu progreso</p>
+    </header>
+<nav>
+  <button onclick="mostrarPagina('inicio')">Inicio</button>
+  <button onclick="mostrarPagina('horarios')">Horarios</button>
+  <button onclick="mostrarPagina('materias')">Materias</button>
+  <button onclick="mostrarPagina('ejercicios')">Ejercicios</button>
+  <button onclick="mostrarPagina('progreso')">Mi progreso</button>
+</nav>
+
+    <div class="container">
+
+        <!-- Sección 1: Perfil / Registro Local -->
+        <div class="card">
+            <h2>1. Perfil del Estudiante</h2>
+            <div class="form-group">
+                <label for="nombreEstudiante">Nombre del Estudiante:</label>
+                <input type="text" id="nombreEstudiante" placeholder="Ej: Aidimar Nazareth" oninput="guardarPerfil()">
+            </div>
+        </div>
+
+        <div class="flex-row">
+            <!-- Sección 2: Gestión de Horarios -->
+            <div class="flex-col">
+                <div class="card">
+                    <h2>2. Organización de Horarios</h2>
+                    <div class="form-group">
+                        <label for="materia">Materia / Tema:</label>
+                        <input type="text" id="materia" placeholder="Ej: Lógica de Programación">
+                    </div>
+                    <div class="form-group">
+                        <label for="diaHora">Día y Hora:</label>
+                        <input type="text" id="diaHora" placeholder="Ej: Lunes 14:00 hrs">
+                    </div>
+                    <button onclick="agregarHorario()">Guardar Horario</button>
+                    
+                    <table id="tablaHorarios">
+                        <thead>
+                            <tr>
+                                <th>Materia</th>
+                                <th>Horario</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Se llena dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sección 3: Contenidos y Ejercicios Básicos de Programación -->
+            <div class="flex-col">
+                <div class="card">
+                    <h2>3. Contenidos y Progreso</h2>
+                    <p style="font-size: 0.9rem; color: #64748b;">Marca los contenidos que ya estudiaste:</p>
+                    
+                    <div id="listaContenidos">
+                        <!-- Generado por JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección 4: Panel de Recordatorios y Resumen -->
+        <div class="card">
+            <h2>4. Notificaciones y Estado del Sistema</h2>
+            <div id="panelRecordatorio" style="padding: 1rem; background-color: #e0f2fe; border-left: 4px solid #0284c7; border-radius: 4px; font-size: 0.95rem;">
+                🔔 <strong>Recordatorio activo:</strong> ¡Mantén la constancia! Organiza tus horarios diarios y revisa tus pendientes de programación.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Inicialización y Carga de Datos desde el Navegador (LocalStorage)
+        document.addEventListener("DOMContentLoaded", () => {
+            cargarPerfil();
+            cargarHorarios();
+            cargarContenidos();
+        });
+
+        // 1. Manejo de Perfil
+        function guardarPerfil() {
+            const nombre = document.getElementById("nombreEstudiante").value;
+            localStorage.setItem("study_nombre", nombre);
+        }
+
+        function cargarPerfil() {
+            const nombreGuardado = localStorage.getItem("study_nombre");
+            if (nombreGuardado) {
+                document.getElementById("nombreEstudiante").value = nombreGuardado;
+            }
+        }
+
+        // 2. Manejo de Horarios
+        function agregarHorario() {
+            const materia = document.getElementById("materia").value;
+            const diaHora = document.getElementById("diaHora").value;
+
+            if (!materia || !diaHora) {
+                alert("Por favor completa ambos campos para registrar el horario.");
+                return;
+            }
+
+            let horarios = JSON.parse(localStorage.getItem("study_horarios")) || [];
+            horarios.push({ materia, diaHora });
+            localStorage.setItem("study_horarios", JSON.stringify(horarios));
+
+            document.getElementById("materia").value = "";
+            document.getElementById("diaHora").value = "";
+            cargarHorarios();
+        }
+
+        function cargarHorarios() {
+            let horarios = JSON.parse(localStorage.getItem("study_horarios")) || [];
+            let tbody = document.querySelector("#tablaHorarios tbody");
+            tbody.innerHTML = "";
+
+            horarios.forEach((h, index) => {
+                let tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${h.materia}</td>
+                    <td>${h.diaHora}</td>
+                    <td><button style="background-color: #ef4444; padding: 0.3rem 0.6rem; font-size: 0.8rem;" onclick="eliminarHorario(${index})">Eliminar</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function eliminarHorario(index) {
+            let horarios = JSON.parse(localStorage.getItem("study_horarios")) || [];
+            horarios.splice(index, 1);
+            localStorage.setItem("study_horarios", JSON.stringify(horarios));
+            cargarHorarios();
+        }
+
+        // 3. Contenidos de Programación y Progreso
+        const contenidosBase = [
+            { id: 1, titulo: "Introducción a la Lógica", desc: "¿Qué es un algoritmo y cómo se estructura?" },
+            { id: 2, titulo: "Variables y Tipos de Datos", desc: "Cómo almacenar información en la memoria." },
+            { id: 3, titulo: "Estructuras de Control (If / Else)", desc: "Tomar decisiones lógicas en el código." }
+        ];
+
+        function cargarContenidos() {
+            let progreso = JSON.parse(localStorage.getItem("study_progreso")) || {};
+            let contenedor = document.getElementById("listaContenidos");
+            contenedor.innerHTML = "";
+
+            contenidosBase.forEach(c => {
+                let completado = progreso[c.id] || false;
+                let div = document.createElement("div");
+                div.style.marginBottom = "1rem";
+                div.style.padding = "0.75rem";
+                div.style.border = "1px solid #e2e8f0";
+                div.style.borderRadius = "6px";
+                div.innerHTML = `
+                    <strong>${c.titulo}</strong> <span class="badge ${completado ? 'badge-done' : 'badge-pending'}">${completado ? 'Completado' : 'Pendiente'}</span>
+                    <p style="margin: 0.3rem 0; font-size: 0.85rem; color: #64748b;">${c.desc}</p>
+                    <button style="background-color: ${completado ? '#64748b' : '#10b981'}; font-size: 0.8rem; padding: 0.4rem 0.8rem; margin-top: 0.3rem;" onclick="toggleProgreso(${c.id})">
+                        ${completado ? 'Marcar como Pendiente' : 'Marcar como Concluido'}
+                    </button>
+                `;
+                contenedor.appendChild(div);
+            });
+        }
+
+        function toggleProgreso(id) {
+            let progreso = JSON.parse(localStorage.getItem("study_progreso")) || {};
+            progreso[id] = !progreso[id];
+            localStorage.setItem("study_progreso", JSON.stringify(progreso));
+            cargarContenidos();
+        }
+    </script>
+<script>
+function mostrarPagina(pagina) {
+  const secciones = {
+    inicio: 'Perfil del Estudiante',
+    horarios: 'Organización de Horarios',
+    materias: 'Contenidos y progreso',
+    ejercicios: 'Contenidos y Ejercicios Básicos de Programación',
+    progreso: 'Contenidos y Progreso'
+  };
+
+  const destino = secciones[pagina];
+
+  if (destino) {
+    const elemento = [...document.querySelectorAll('h1,h2,h3,h4')]
+      .find(e => e.textContent.trim().includes(destino));
+
+    if (elemento) {
+      elemento.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+}
+</script>
+</body>
+</html>
